@@ -42,6 +42,13 @@ public class Main extends Application {
      However, we can use Integer.parseInt to operate on these values.
      */
 
+    static int matcheswon = 1;
+    static int matcheslost = 2;
+    static int gameswon = 3;
+    static int gameslost = 4;
+    static int pointswon = 5;
+    static int pointslost = 6;
+
     //I have to make this a static variable so that it can be reached in any method
     static Stage allplayers;
 
@@ -65,6 +72,10 @@ public class Main extends Application {
         Button button3 = new Button("Create brackets.");
 
         Button button4 = new Button("Record a match.");
+        button4.setOnAction(event->{
+           playernames();
+           option4();
+        });
 
 
         Button button5 = new Button("View a player.");
@@ -75,7 +86,7 @@ public class Main extends Application {
         
         Button button6 = new Button("Exit the game.");
 
-        VBox layout = new VBox(info, button1, button2, button5);
+        VBox layout = new VBox(info, button1, button2, button4, button5);
         Scene scene = new Scene(layout);
         primaryStage.setTitle("Badminton Game!");
         primaryStage.setScene(scene);
@@ -92,10 +103,17 @@ public class Main extends Application {
 
         GridPane layout = new GridPane();
         layout.add(new Label("Player Name"), 0, 0);
+        int f = 2;
         for(int i =0; i< players.size(); i++){
             Label label = new Label(players.get(i).get(0));
             layout.add(label, 0, i+1);
+            f++;
         }
+        Button button = new Button("Close window.");
+        button.setOnAction(event-> {
+            allplayers.close();
+        });
+        layout.add(button, 0, f);
 
         Scene scene = new Scene(layout);
         allplayers.setScene(scene);
@@ -193,7 +211,146 @@ public class Main extends Application {
     }//End of option2()
 
     //public static void option3() {}
-    //public static void option4() {}
+
+    public static void option4() {
+        Stage stage = new Stage();
+        stage.setTitle("Choose players.");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        GridPane layout = new GridPane();
+
+        layout.add(new Label("Player One"), 0, 0);
+        layout.add(new Label("Player Two"), 1, 0);
+
+        TextField player1 = new TextField();
+        TextField player2 = new TextField();
+        layout.add(player1, 0, 1);
+        layout.add(player2, 1, 1);
+
+        Button button = new Button("Start the Match!");
+        layout.add(button, 2, 1);
+        button.setOnAction(event ->{
+            int i;
+            int u;
+            for(i = 0; i < players.size(); i++){
+                if(players.get(i).get(0).equals(player1.getText())){
+                    break;
+                }
+            }
+            for(u = 0; u < players.size(); u++){
+                if(players.get(u).get(0).equals(player2.getText())){
+                    break;
+                }
+            }
+            int x = i;
+            int y = u;
+            allplayers.close();
+            stage.close();
+            match(x, y);
+        });
+
+        Scene scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    //Beginning of match()
+    public static void match(int player1, int player2){
+        Stage stage = new Stage();
+        stage.setTitle("Record a game.");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        GridPane layout = new GridPane();
+
+        //Labels for player names
+        layout.add(new Label(players.get(player1).get(0)), 1, 0);
+        layout.add(new Label(players.get(player2).get(0)), 3, 0);
+        //Labels for games won/lost
+        layout.add(new Label("Games won: "), 0, 1);
+        layout.add(new Label("Games won: "), 2, 1);
+        //Labels for points won/lost
+        layout.add(new Label("Points won: "), 0, 2);
+        layout.add(new Label("Points won: "), 2, 2);
+
+        //Textfields
+        TextField p1gw = new TextField();
+        layout.add(p1gw, 1, 1);
+        TextField p2gw = new TextField();
+        layout.add(p2gw, 3, 1);
+        TextField p1pw = new TextField();
+        layout.add(p1pw, 1, 2);
+        TextField p2pw = new TextField();
+        layout.add(p2pw, 3, 2);
+
+        Button button = new Button("Submit!");
+        layout.add(button, 3, 3);
+        button.setOnAction(event-> {
+            int oldnum;
+            int newnum;
+
+            //Player1's games won = Player2's games lost
+            oldnum = Integer.parseInt(players.get(player1).get(gameswon));
+            newnum = oldnum + Integer.parseInt(p1gw.getText());
+            players.get(player1).set(gameswon, String.valueOf(newnum));
+            oldnum = Integer.parseInt(players.get(player2).get(gameslost));
+            newnum = oldnum + Integer.parseInt(p1gw.getText());
+            players.get(player2).set(gameslost, String.valueOf(newnum));
+
+            //Player2's games won = Player1's games lost
+            oldnum = Integer.parseInt(players.get(player2).get(gameswon));
+            newnum = oldnum + Integer.parseInt(p2gw.getText());
+            players.get(player2).set(gameswon, String.valueOf(newnum));
+            oldnum = Integer.parseInt(players.get(player1).get(gameslost));
+            newnum = oldnum + Integer.parseInt(p2gw.getText());
+            players.get(player1).set(gameslost, String.valueOf(newnum));
+
+            //Player1's points won = Player2's points lost
+            oldnum = Integer.parseInt(players.get(player1).get(pointswon));
+            newnum = oldnum + Integer.parseInt(p1pw.getText());
+            players.get(player1).set(pointswon, String.valueOf(newnum));
+            oldnum = Integer.parseInt(players.get(player2).get(pointslost));
+            newnum = oldnum + Integer.parseInt(p1pw.getText());
+            players.get(player2).set(pointslost, String.valueOf(newnum));
+
+            //Player2's points won = Player1's points lost
+            oldnum = Integer.parseInt(players.get(player2).get(pointswon));
+            newnum = oldnum + Integer.parseInt(p2pw.getText());
+            players.get(player2).set(pointswon, String.valueOf(newnum));
+            oldnum = Integer.parseInt(players.get(player1).get(pointslost));
+            newnum = oldnum + Integer.parseInt(p2pw.getText());
+            players.get(player1).set(pointslost, String.valueOf(newnum));
+
+            //Now we check to see who won the match
+            int playeronewins = Integer.parseInt(p1gw.getText());
+            int playertwowins = Integer.parseInt(p2gw.getText());
+            if(playeronewins>playertwowins){
+                oldnum = Integer.parseInt(players.get(player1).get(matcheswon));
+                newnum = oldnum + 1;
+                players.get(player1).set(matcheswon, String.valueOf(newnum));
+                oldnum = Integer.parseInt(players.get(player2).get(matcheslost));
+                newnum = oldnum + 1;
+                players.get(player2).set(matcheslost, String.valueOf(newnum));
+            } else{
+                oldnum = Integer.parseInt(players.get(player2).get(matcheswon));
+                newnum = oldnum + 1;
+                players.get(player2).set(matcheswon, String.valueOf(newnum));
+                oldnum = Integer.parseInt(players.get(player1).get(matcheslost));
+                newnum = oldnum + 1;
+                players.get(player1).set(matcheslost, String.valueOf(newnum));
+            }
+
+            stage.close();
+                });
+
+        Scene scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.show();
+    }//Ending of match()
+
+/*    //Beginning of changeValues()
+    public static void changeValues(int playerID, int changethis, int amount){
+        int oldnum = Integer.parseInt(players.get(playerID).get(changethis));
+        int newnum = oldnum + amount;
+        players.get(playerID).set(changethis, String.valueOf(newnum));
+    }//Ending of changeValues()*/
 
     //Start of option5()
     public static void option5(){
