@@ -42,6 +42,7 @@ public class Main extends Application {
      However, we can use Integer.parseInt to operate on these values.
      */
 
+    //Static variables so that they can be reached in any method
     static int playername = 0;
     static int matcheswon = 1;
     static int matcheslost = 2;
@@ -50,8 +51,18 @@ public class Main extends Application {
     static int pointswon = 5;
     static int pointslost = 6;
 
-    //I have to make this a static variable so that it can be reached in any method
     static Stage allplayers;
+
+    /**
+     The gamemode variable refers to round robin or single elimination.
+     If gamemode is set to 1, then the tournament is using the round robin format.
+     If the gamemode is set to 2, then the tournament is using a single elimination format.
+     The user must set this before recording games.
+     The user cannot change this after setting it once.
+     */
+
+    static int gamemode = 0;
+
 
     //Start of start()
     @Override
@@ -71,6 +82,9 @@ public class Main extends Application {
         });
 
         Button button3 = new Button("Create brackets.");
+        button3.setOnAction(event->{
+            option3();
+        });
 
         Button button4 = new Button("Record a match.");
         button4.setOnAction(event->{
@@ -87,7 +101,7 @@ public class Main extends Application {
         
         Button button6 = new Button("Exit the game.");
 
-        VBox layout = new VBox(info, button1, button2, button4, button5);
+        VBox layout = new VBox(info, button1, button2, button3, button4, button5);
         Scene scene = new Scene(layout);
         primaryStage.setTitle("Badminton Game!");
         primaryStage.setScene(scene);
@@ -222,7 +236,65 @@ public class Main extends Application {
         stage.show();
     }//End of option2()
 
-    //public static void option3() {}
+    public static void option3() {
+        Stage stage = new Stage();
+        stage.setTitle("Creating tournament brackets...");
+        GridPane layout = new GridPane();
+        Scene scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.setX(1200);
+        stage.setY(300);
+
+        switch(gamemode){
+            case 0:
+                Label info = new Label("Which format is this tournament?");
+                Label roundrobin = new Label("In a Round Robin format, every " +
+                        "\nplayer will go against every player.");
+                Label singelim = new Label("In a Single Elimination format, " +
+                        "\nplayers will play until they lose.");
+
+                Button buttonr = new Button("Round Robin");
+                buttonr.setOnAction(event->{
+                    gamemode = 1;
+                    stage.close();
+                    option3();
+                });
+
+                Button buttons = new Button("Single Elimination");
+                buttons.setOnAction(event->{
+                    gamemode = 2;
+                    stage.close();
+                    option3();
+                });
+
+                layout.add(info, 1, 0);
+
+                layout.add(roundrobin, 0, 1);
+                layout.add(buttonr, 0, 2);
+
+                layout.add(singelim, 2, 1);
+                layout.add(buttons, 2, 2);
+
+                stage.show();
+                break;
+
+            case 1:
+                Label matchups = new Label("Matchups");
+                layout.add(matchups,1,0);
+
+                for(int i = 0; i < players.size(); i++){
+                    for(int p = i+1; p < players.size(); p++){
+                        Label matchup1 = new Label(players.get(i).get(playername));
+                        Label matchup2 = new Label(players.get(p).get(playername));
+                        layout.add(matchup1, 0, i+p+1);
+                        layout.add(new Label("     versus     "), 1, i+p+1);
+                        layout.add(matchup2, 2, i+p+1);
+                    }
+                }
+
+                stage.show();
+        }
+    }
 
     public static void option4() {
         Stage stage = new Stage();
@@ -262,7 +334,6 @@ public class Main extends Application {
 
         Scene scene = new Scene(layout);
         stage.setScene(scene);
-        stage.setWidth(300);
         stage.setX(1200);
         stage.setY(300);
         stage.show();
@@ -271,7 +342,7 @@ public class Main extends Application {
     //Beginning of match()
     public static void match(int player1, int player2){
         Stage stage = new Stage();
-        stage.setTitle("Record a game.");
+        stage.setTitle("Recording a game...");
         stage.initModality(Modality.APPLICATION_MODAL);
         GridPane layout = new GridPane();
 
@@ -357,7 +428,6 @@ public class Main extends Application {
 
         Scene scene = new Scene(layout);
         stage.setScene(scene);
-        stage.setWidth(300);
         stage.setX(1200);
         stage.setY(300);
         stage.show();
@@ -380,11 +450,6 @@ public class Main extends Application {
         TextField namef = new TextField();
         Button button = new Button("Submit.");
 
-        HBox layout = new HBox(namet, namef, button);
-        Scene scene = new Scene(layout);
-        stage.setScene(scene);
-        stage.show();
-
         button.setOnAction(event-> {
             for(int i = 0; i < players.size(); i++) {
                 if(players.get(i).get(playername).equals(namef.getText())){
@@ -396,6 +461,12 @@ public class Main extends Application {
             }
     });
 
+        HBox layout = new HBox(namet, namef, button);
+        Scene scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.setX(1200);
+        stage.setY(300);
+        stage.show();
     }//End of option5()
 
     //Start of option5player()
@@ -422,7 +493,6 @@ public class Main extends Application {
 
         Scene scene = new Scene(gridpane);
         stage.setScene(scene);
-        stage.setWidth(300);
         stage.setX(1200);
         stage.setY(300);
         stage.show();
