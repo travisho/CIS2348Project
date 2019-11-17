@@ -91,6 +91,9 @@ public class Main extends Application {
         Scene scene = new Scene(layout);
         primaryStage.setTitle("Badminton Game!");
         primaryStage.setScene(scene);
+        primaryStage.setWidth(300);
+        primaryStage.setX(800);
+        primaryStage.setY(300);
         primaryStage.show();
     }//End of start
 
@@ -101,6 +104,7 @@ public class Main extends Application {
     public static void playernames() {
         allplayers = new Stage();
         allplayers.setTitle("Current Players");
+        allplayers.initModality(Modality.APPLICATION_MODAL);
 
         GridPane layout = new GridPane();
         layout.add(new Label("Player Name"), 0, 0);
@@ -118,6 +122,9 @@ public class Main extends Application {
 
         Scene scene = new Scene(layout);
         allplayers.setScene(scene);
+        allplayers.setWidth(300);
+        allplayers.setX(400);
+        allplayers.setY(300);
         allplayers.show();
     }
 
@@ -163,11 +170,6 @@ public class Main extends Application {
         TextField namef = new TextField();
         Button button = new Button("Submit.");
 
-        HBox layout = new HBox(namet, namef, button);
-        Scene scene = new Scene(layout);
-        stage.setScene(scene);
-        stage.show();
-
         button.setOnAction(event -> {
                     ArrayList<String> newplayer = new ArrayList<String>(7);
                     newplayer.add(namef.getText());
@@ -180,6 +182,13 @@ public class Main extends Application {
                     playernames();
                 });
 
+        HBox layout = new HBox(namet, namef, button);
+        Scene scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.setWidth(300);
+        stage.setX(1200);
+        stage.setY(300);
+        stage.show();
     }//End of option1()
 
     //Start of option2()
@@ -191,11 +200,6 @@ public class Main extends Application {
         Label namet = new Label("Name: ");
         TextField namef = new TextField();
         Button button = new Button("Submit");
-
-        HBox layout = new HBox(namet, namef, button);
-        Scene scene = new Scene(layout);
-        stage.setScene(scene);
-        stage.show();
 
         button.setOnAction(event-> {
             for(int i = 0; i < players.size(); i++) {
@@ -209,6 +213,13 @@ public class Main extends Application {
             }
         });
 
+        HBox layout = new HBox(namet, namef, button);
+        Scene scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.setWidth(300);
+        stage.setX(1200);
+        stage.setY(300);
+        stage.show();
     }//End of option2()
 
     //public static void option3() {}
@@ -251,6 +262,9 @@ public class Main extends Application {
 
         Scene scene = new Scene(layout);
         stage.setScene(scene);
+        stage.setWidth(300);
+        stage.setX(1200);
+        stage.setY(300);
         stage.show();
     }
 
@@ -343,6 +357,9 @@ public class Main extends Application {
 
         Scene scene = new Scene(layout);
         stage.setScene(scene);
+        stage.setWidth(300);
+        stage.setX(1200);
+        stage.setY(300);
         stage.show();
     }//Ending of match()
 
@@ -405,6 +422,9 @@ public class Main extends Application {
 
         Scene scene = new Scene(gridpane);
         stage.setScene(scene);
+        stage.setWidth(300);
+        stage.setX(1200);
+        stage.setY(300);
         stage.show();
     }//End of option5player()
 
