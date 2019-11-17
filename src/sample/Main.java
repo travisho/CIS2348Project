@@ -42,6 +42,7 @@ public class Main extends Application {
      However, we can use Integer.parseInt to operate on these values.
      */
 
+    static int playername = 0;
     static int matcheswon = 1;
     static int matcheslost = 2;
     static int gameswon = 3;
@@ -105,7 +106,7 @@ public class Main extends Application {
         layout.add(new Label("Player Name"), 0, 0);
         int f = 2;
         for(int i =0; i< players.size(); i++){
-            Label label = new Label(players.get(i).get(0));
+            Label label = new Label(players.get(i).get(playername));
             layout.add(label, 0, i+1);
             f++;
         }
@@ -158,11 +159,11 @@ public class Main extends Application {
         stage.setTitle("Adding a player...");
         stage.initModality(Modality.APPLICATION_MODAL);
 
-        Label name = new Label("Name: ");
+        Label namet = new Label("Name: ");
         TextField namef = new TextField();
         Button button = new Button("Submit.");
 
-        HBox layout = new HBox(name, namef, button);
+        HBox layout = new HBox(namet, namef, button);
         Scene scene = new Scene(layout);
         stage.setScene(scene);
         stage.show();
@@ -187,18 +188,18 @@ public class Main extends Application {
         stage.setTitle("Removing a player...");
         stage.initModality(Modality.APPLICATION_MODAL);
 
-        Label name = new Label("Name: ");
+        Label namet = new Label("Name: ");
         TextField namef = new TextField();
         Button button = new Button("Submit");
 
-        HBox layout = new HBox(name, namef, button);
+        HBox layout = new HBox(namet, namef, button);
         Scene scene = new Scene(layout);
         stage.setScene(scene);
         stage.show();
 
         button.setOnAction(event-> {
             for(int i = 0; i < players.size(); i++) {
-                if(players.get(i).get(0).equals(namef.getText())){
+                if(players.get(i).get(playername).equals(namef.getText())){
                     players.remove(players.get(i));
                     stage.close();
                     allplayers.close();
@@ -232,12 +233,12 @@ public class Main extends Application {
             int i;
             int u;
             for(i = 0; i < players.size(); i++){
-                if(players.get(i).get(0).equals(player1.getText())){
+                if(players.get(i).get(playername).equals(player1.getText())){
                     break;
                 }
             }
             for(u = 0; u < players.size(); u++){
-                if(players.get(u).get(0).equals(player2.getText())){
+                if(players.get(u).get(playername).equals(player2.getText())){
                     break;
                 }
             }
@@ -261,8 +262,8 @@ public class Main extends Application {
         GridPane layout = new GridPane();
 
         //Labels for player names
-        layout.add(new Label(players.get(player1).get(0)), 1, 0);
-        layout.add(new Label(players.get(player2).get(0)), 3, 0);
+        layout.add(new Label(players.get(player1).get(playername)), 1, 0);
+        layout.add(new Label(players.get(player2).get(playername)), 3, 0);
         //Labels for games won/lost
         layout.add(new Label("Games won: "), 0, 1);
         layout.add(new Label("Games won: "), 2, 1);
@@ -358,18 +359,18 @@ public class Main extends Application {
         stage.setTitle("Getting a player summary...");
         stage.initModality(Modality.APPLICATION_MODAL);
 
-        Label name = new Label("Name: ");
+        Label namet = new Label("Name: ");
         TextField namef = new TextField();
         Button button = new Button("Submit.");
 
-        HBox layout = new HBox(name, namef, button);
+        HBox layout = new HBox(namet, namef, button);
         Scene scene = new Scene(layout);
         stage.setScene(scene);
         stage.show();
 
         button.setOnAction(event-> {
             for(int i = 0; i < players.size(); i++) {
-                if(players.get(i).get(0).equals(namef.getText())){
+                if(players.get(i).get(playername).equals(namef.getText())){
                     option5player(i);
                     allplayers.close();
                     stage.close();
@@ -405,6 +406,6 @@ public class Main extends Application {
         Scene scene = new Scene(gridpane);
         stage.setScene(scene);
         stage.show();
-    }//End of option4player()
+    }//End of option5player()
 
 }
