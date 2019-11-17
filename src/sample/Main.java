@@ -237,63 +237,86 @@ public class Main extends Application {
     }//End of option2()
 
     public static void option3() {
+
+        switch(gamemode){
+            case 0:
+                option3g0();
+                break;
+
+            case 1:
+                option3g1();
+                break;
+
+            case 2:
+                break;
+        }
+
+    }
+
+    public static void option3g0() {
         Stage stage = new Stage();
         stage.setTitle("Creating tournament brackets...");
         GridPane layout = new GridPane();
+
+        Label info = new Label("Which format is this tournament?");
+        Label roundrobin = new Label("In a Round Robin format, every " +
+                "\nplayer will go against every player.");
+        Label singelim = new Label("In a Single Elimination format, " +
+                "\nplayers will play until they lose.");
+
+        Button buttonr = new Button("Round Robin");
+        buttonr.setOnAction(event->{
+            gamemode = 1;
+            stage.close();
+            option3();
+        });
+
+        Button buttons = new Button("Single Elimination");
+        buttons.setOnAction(event->{
+            gamemode = 2;
+            stage.close();
+            option3();
+        });
+
+        layout.add(info, 1, 0);
+
+        layout.add(roundrobin, 0, 1);
+        layout.add(buttonr, 0, 2);
+
+        layout.add(singelim, 2, 1);
+        layout.add(buttons, 2, 2);
+
         Scene scene = new Scene(layout);
         stage.setScene(scene);
         stage.setX(1200);
         stage.setY(300);
+        stage.show();
+    }
 
-        switch(gamemode){
-            case 0:
-                Label info = new Label("Which format is this tournament?");
-                Label roundrobin = new Label("In a Round Robin format, every " +
-                        "\nplayer will go against every player.");
-                Label singelim = new Label("In a Single Elimination format, " +
-                        "\nplayers will play until they lose.");
+    public static void option3g1() {
+        Stage stage = new Stage();
+        stage.setTitle("Creating tournament brackets...");
+        GridPane layout = new GridPane();
+        Label matchups = new Label("Matchups");
+        layout.add(matchups,1,0);
 
-                Button buttonr = new Button("Round Robin");
-                buttonr.setOnAction(event->{
-                    gamemode = 1;
-                    stage.close();
-                    option3();
-                });
-
-                Button buttons = new Button("Single Elimination");
-                buttons.setOnAction(event->{
-                    gamemode = 2;
-                    stage.close();
-                    option3();
-                });
-
-                layout.add(info, 1, 0);
-
-                layout.add(roundrobin, 0, 1);
-                layout.add(buttonr, 0, 2);
-
-                layout.add(singelim, 2, 1);
-                layout.add(buttons, 2, 2);
-
-                stage.show();
-                break;
-
-            case 1:
-                Label matchups = new Label("Matchups");
-                layout.add(matchups,1,0);
-
-                for(int i = 0; i < players.size(); i++){
-                    for(int p = i+1; p < players.size(); p++){
-                        Label matchup1 = new Label(players.get(i).get(playername));
-                        Label matchup2 = new Label(players.get(p).get(playername));
-                        layout.add(matchup1, 0, i+p+1);
-                        layout.add(new Label("     versus     "), 1, i+p+1);
-                        layout.add(matchup2, 2, i+p+1);
-                    }
-                }
-
-                stage.show();
+        int position = 1;
+        for(int i = 0; i < players.size(); i++){
+            for(int p = i+1; p < players.size(); p++){
+                Label matchup1 = new Label(players.get(i).get(playername));
+                Label matchup2 = new Label(players.get(p).get(playername));
+                layout.add(matchup1, 0, position);
+                layout.add(new Label("     versus     "), 1, position);
+                layout.add(matchup2, 2, position);
+                position++;
+            }
         }
+
+        Scene scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.setX(1200);
+        stage.setY(300);
+        stage.show();
     }
 
     public static void option4() {
