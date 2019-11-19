@@ -227,12 +227,30 @@ public class Main extends Application {
         Button button = new Button("Submit");
 
         button.setOnAction(event -> {
-            ArrayList<String> newplayer = new ArrayList<String>(7);
-            newplayer.add(namef.getText());
-            for (int i = 1; i < 7; i++) {
-                newplayer.add("0");
+            String uinput = namef.getText();
+            boolean check = true;
+            for(int c = 0; c < players.size(); c++){
+                if(players.get(c).get(playername).equals(uinput)){
+                    check = false;
+                }
             }
-            players.add(newplayer);
+
+            if(check) {
+                ArrayList<String> newplayer = new ArrayList<String>(7);
+                newplayer.add(uinput);
+                for (int i = 1; i < 7; i++) {
+                    newplayer.add("0");
+                }
+                players.add(newplayer);
+            } else{
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Alert Box.");
+                alert.setHeaderText("Error type: Name Error.");
+                String contentText = String.format("A player already has this name.");
+                alert.setContentText(contentText);
+                alert.showAndWait();
+            }
+
             stage.close();
             allplayers.close();
             playernames();
